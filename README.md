@@ -1,66 +1,25 @@
-## Foundry
+## Poe NFT
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This is the repository for Poe NFT smart contracts. Poe NFT is the first collection to implement title transfers and the right of reclaim (explained in [this article](https://a16zcrypto.com/posts/article/how-nft-royalties-work/)).
 
-Foundry consists of:
+This project combines my love for Edgar Allan Poe's stories with my passion for crypto and smart contract programming.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+**View the collection**: https://www.poenft.com/
 
-## Documentation
+### IERC721Reclaimable.sol and ERC721Reclaimable.sol
+`IERC721Reclaimable` is the interface I devised for title transfers and the right of reclaim. You can think of it as
+a two tiered ownership system.
 
-https://book.getfoundry.sh/
+Layer 1 is the traditional asset ownership concept of ERC-721: `ownerOf`, `approve`, `transfer`, etc.
 
-## Usage
+Layer 2 is the new concept of title ownership. Title ownership is a stronger form of ownership than asset ownership. It has functions analagous to Layer 1 like `titleOwnerOf`, `titleApprove`, `titleTransfer`, ..., with two additional features:
 
-### Build
+1. A fixed ETH fee for transferring title ownership
+2. The `claimOwnership` function, callable by the title owner, that will transfer asset ownership back to the title owner.
 
-```shell
-$ forge build
-```
+When the asset and title owners are different entities, you can think of the token as being rented out to the asset owner. To fully own the token, you must own the title.
 
-### Test
+`ERC721Reclaimable` is my canonical implementation of this new standard.
 
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+### PoeRewards.sol
+I created a rewards contract to spice up the collection.
