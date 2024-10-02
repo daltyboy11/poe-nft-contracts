@@ -9,7 +9,8 @@ import {
     NotTitleOwner,
     TokenAnswered,
     RewardsStillClaimable,
-    NotLeftoverRewardsBeneficiary
+    NotLeftoverRewardsBeneficiary,
+    RewardsEnded
 } from "../src/PoeRewards.sol";
 
 contract PoeRewardsTest is Test {
@@ -139,6 +140,12 @@ contract PoeRewardsTest is Test {
     function testClaimLeftoverRewardsAsNonBeneficiaryReverts() public {
         vm.expectRevert(abi.encodeWithSelector(NotLeftoverRewardsBeneficiary.selector));
         poeRewards.claimLeftoverRewards();
+    }
+
+    function testSubmitGuessAfterEndsAtReverts() public {
+        vm.warp(poeRewards.endsAt() + 1);
+        vm.expectRevert(abi.encodeWithSelector(RewardsEnded.selector));
+        poeRewards.submitGuess(0, v_token0_nonce0, r_token0_nonce0, s_token0_nonce0);
     }
 
     function testClaimLeftoverRewardsAfterEndAsBeneficiaryWorks() public {

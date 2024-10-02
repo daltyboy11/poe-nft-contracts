@@ -58,6 +58,7 @@ contract PoeRewards {
      * an EOA whose private key seed is a concatenation of the raw story title and its token ID.
      */
     function submitGuess(uint256 tokenId, uint8 v, bytes32 r, bytes32 s) external {
+        require(block.timestamp < endsAt, RewardsEnded());
         require(!answered[tokenId], AlreadyAnswered(tokenId)); 
 
         address titleOwner = erc721.titleOwnerOf(tokenId);
@@ -80,6 +81,10 @@ contract PoeRewards {
         return signer == answerAddress;
     }
 
+    /**
+     * Once the rewards period is over, the leftoever rewards beneficiary can reclaim rewards. At this point, the rewards
+     * program has ended and you can no longer submit guesses.
+     */
     function claimLeftoverRewards() external {
         require(msg.sender == leftoverRewardsBeneficiary, NotLeftoverRewardsBeneficiary());
         require(block.timestamp > endsAt, RewardsStillClaimable());
@@ -95,6 +100,7 @@ event TokenAnswered(uint256 indexed tokenId);
 error NotTitleOwner(uint256 tokenId);
 error NotLeftoverRewardsBeneficiary();
 error RewardsStillClaimable();
+error RewardsEnded();
 error NoRewardsToClaim();
 error LeftoverRewardsTransferFailed();
 error AlreadyAnswered(uint256 tokenId);
