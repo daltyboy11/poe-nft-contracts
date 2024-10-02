@@ -15,13 +15,15 @@ contract PoeRewards {
     /// @notice True if the correct answer was already submitted for the token
     mapping(uint256 tokenId => bool) public answered;
 
+    /// @notice After the rewards period ends the rewards beneficiary can reclaim any unclaimed rewards
     uint256 public immutable endsAt;
+
+    /// @notice The address that is authorized to reclaim unclaimed rewards when the rewards period ends
     address public immutable leftoverRewardsBeneficiary;
 
     uint256 public nonce = 0;
 
     mapping(uint256 tokenId => address answerAddress) private answerAddresses;
-
 
     constructor(
         ERC721Reclaimable _erc721,
@@ -48,6 +50,13 @@ contract PoeRewards {
         leftoverRewardsBeneficiary = _leftoverRewardsBeneficiary;
     }
 
+    /**
+     * The title owner can submit a guess for which Edgar Allan Poe story inspired their token
+     * art. The signature is an ERC-191 compliant signature of the token ID and the contract nonce.
+     * 
+     * A valid guess is when the recovered address corresponds to the saved `answerAddress`, which is
+     * an EOA whose private key seed is a concatenation of the raw story title and its token ID.
+     */
     function submitGuess(uint256 tokenId, uint8 v, bytes32 r, bytes32 s) external {
         require(!answered[tokenId], AlreadyAnswered(tokenId)); 
 
