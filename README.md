@@ -6,6 +6,11 @@ This project combines my love for Edgar Allan Poe's stories with my passion for 
 
 **View the collection**: https://www.poenft.com/
 
+## Running the code
+This project uses [foundry](https://book.getfoundry.sh/). Clone the repo and run `forge build` to get started.
+
+## Contracts
+
 ### IERC721Reclaimable.sol and ERC721Reclaimable.sol
 `IERC721Reclaimable` is the interface I devised for title transfers and the right of reclaim. You can think of it as
 a two tiered ownership system.
