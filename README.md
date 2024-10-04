@@ -9,6 +9,22 @@ This project combines my love for Edgar Allan Poe's stories with my passion for 
 ## Running the code
 This project uses [foundry](https://book.getfoundry.sh/). Clone the repo and run `forge build` to get started.
 
+### Installing it as a dependency
+If you wish to use these contracts in your foundry project then run:
+```
+foundry install daltyboy11/poe-nft-contracts
+```
+Add this to your `remappings.txt`:
+```
+@poe-nft-contracts/=lib/poe-nft-contracts/src/
+```
+And import the contracts like so:
+```
+import {PoeERC721Reclaimable} from "@poe-nft-contracts/PoeERC721Reclaimable.sol";
+import {PoeRewards} from "@poe-nft-contracts/PoeRewards.sol";
+```
+
+
 ## Contracts
 
 ### IERC721Reclaimable.sol and ERC721Reclaimable.sol
